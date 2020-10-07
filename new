@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>Circles</title>
+<style>
+#sketchpad {
+    float:left;
+    border:10px solid #888;
+    border-radius:10px;
+ }
+</style>
+</head>
+<body onload="init()">
+    <div id="sketchpadapp">
+        <div>
+             <input type="submit" value="Clear" onclick="clearCanvas(canvas,ctx);">
+        </div>
+        <div>
+            <canvas id="sketchpad" height="500" width="800">
+            </canvas>
+        </div>
+    </div>
+</body>
+    
+<!--  script  -->
+<script type="text/javascript">
+    
+function init() {
+        
+        canvas = document.getElementById('sketchpad');
+        if (canvas.getContext)
+            ctx = canvas.getContext('2d');
+        if (ctx) {
+            canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
+            canvas.addEventListener('mousemove', sketchpad_mouseMove, false);
+            window.addEventListener('mouseup', sketchpad_mouseUp, false);
+        }
+    }
+  var canvas,ctx; 
+    var mouseX,mouseY,mouseDown=0;
+    function drawDot(ctx,x,y,size) {
+       r=0; g=0; b=0; a=255;
+        r= Math.floor(Math.random() * 200);
+        g= Math.floor(Math.random() * 100);
+        b=Math.floor(Math.random() * 200);
+    ctx.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI*2, true); 
+        ctx.closePath();
+        ctx.fill();
+    } 
+    function clearCanvas(canvas,ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    function sketchpad_mouseDown() {
+          var r= Math.floor(Math.random() * 50); 
+        mouseDown=1;
+        drawDot(ctx,mouseX,mouseY,r);
+    }
+    function sketchpad_mouseUp() {
+        mouseDown=0;
+    }
+function sketchpad_mouseMove(e) { 
+        var r= Math.floor(Math.random() * 50); 
+         getMousePos(e);
+        if (mouseDown==1) {
+            drawDot(ctx,mouseX,mouseY,r);
+        }
+    }
+    function getMousePos(e) {
+        if (!e)
+            var e = event;
+if (e.offsetX) {
+            mouseX = e.offsetX;
+            mouseY = e.offsetY;
+        }
+        else if (e.layerX) {
+            mouseX = e.layerX;
+            mouseY = e.layerY;
+        }
+     }
+
+</script>
+</html>
